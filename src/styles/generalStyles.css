@@ -1,0 +1,28 @@
+.MenuBar {
+    position: 0;
+    top: fixed;
+    width: 100%;
+    margin-bottom: 0%;
+    /*height: 15%; dejan un espacio como quiero*/
+  }
+  
+  .App {
+    /*background-color: #75e0ff;*/
+    background-color: #343f42;
+    margin: 0px;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .Footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 4.6%;
+  }
+  
+  .FormVerticalCentered {
+    position: relative;
+    top: 45%;
+    transform: translateY(-50%);
+  }
