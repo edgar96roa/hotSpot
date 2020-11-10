@@ -3,17 +3,19 @@ import {
     BrowserRouter as Router,
     Switch,
     Redirect
-  } from 'react-router-dom';
+} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { firebase } from '../firebase/firebaseConfig';
 import { AuthRouter } from './AuthRouter';
-import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
-import { JournalScreen } from '../components/journal/JournalScreen';
 import { login } from '../actions/auth';
-
+import { PrivateRouteTeacher } from './PrivateRouteTeacher';
+import { DashboardRoutesTeacher } from './DashboardRoutesTeacher';
+import { PrivateRouteStudent } from './PrivateRouteStudent';
+import { DashboardRoutesStudent } from './DashboardRoutesStudent';
+import { startLoadingQuestions } from '../actions/questions';
 
 export const AppRouter = () => {
 
@@ -26,24 +28,27 @@ export const AppRouter = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        firebase.auth().onAuthStateChanged( (user) => {
-            
-            if( user?.uid ){
+        firebase.auth().onAuthStateChanged( async(user) => {
+
+            if ( user?.uid ){
                 dispatch( login(user.uid, user.displayName) );
                 setIsLoggedIn(true);
-            } else{
+
+                dispatch( startLoadingQuestions( user.uid ) )
+            }  
+            else{
                 setIsLoggedIn(false);
             }
-
-            //se termina de revisar el estado de firebase
             setChecking(false);
-
         });
+        
     }, [dispatch, setChecking])
 
     if( checking ){
         return(
-            <h1>Espere...</h1>
+            <div>
+                cargando
+            </div>
         );
     }
 
@@ -51,24 +56,29 @@ export const AppRouter = () => {
         <Router>
             <div>
                 <Switch>
+
+                    <PrivateRouteTeacher
+                        path="/teacher"
+                        component={ DashboardRoutesTeacher }
+                        isAuthenticated={ isLoggedIn }
+                    />
+
+                    <PrivateRouteStudent
+                        path="/student"
+                        component={ DashboardRoutesStudent }
+                        isAuthenticated={ isLoggedIn }
+                    />
+
                     <PublicRoute
                         path="/auth"
                         component={ AuthRouter }
                         isAuthenticated={ isLoggedIn }
                     />
 
-                    <PrivateRoute 
-                        exact
-                        isAuthenticated={ isLoggedIn }
-                        path="/"
-                        component={ JournalScreen }
-                    />
-
                     <Redirect to="/auth/login" />
-
 
                 </Switch>
             </div>
         </Router>
-    )
+    );
 }
