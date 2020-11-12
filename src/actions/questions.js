@@ -78,12 +78,10 @@ export const questionStartUpdate = ( question ) => {
     }
 }
 
-export const questionUpdated = ( question, formValues ) => ({
+export const questionUpdated = ( question, formValues
+     ) => ({
     type: types.questionUpdated,
-    payload: {
-        question,
-        ...formValues
-    }
+    payload: question
 });
 
 export const startDeleteQuestion = ( id ) => {
