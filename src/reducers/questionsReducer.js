@@ -45,7 +45,7 @@ export const questionsReducer = ( state = initialState, action ) => {
                 ]
             }
 
-        case types.questionsLoad:
+        case types.questionsLoad: //funciona, no moverle
             return {
                 ...state,
                 questions: [ ...action.payload ]
@@ -61,7 +61,7 @@ export const questionsReducer = ( state = initialState, action ) => {
                 )
             }
         
-        case types.questionsDelete:
+        case types.questionsDelete: //funciona, no moverle
             return {
                 ...state,
                 active: null,

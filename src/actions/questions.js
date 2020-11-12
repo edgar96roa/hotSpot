@@ -61,9 +61,29 @@ export const activeQuestion = ( id, question ) => ({
     }
 });
 
-export const questionUpdated = ( question ) => ({
+export const questionStartUpdate = ( question ) => {
+    return async(dispatch, getState) => {
+        
+        const uid = getState().auth.uid;
+
+        const questionToFirestore = { ...question };
+
+        delete questionToFirestore.id;
+
+        try {
+            await database.doc(`${ uid }/questionBank/questions/${ question.id }`).update( questionToFirestore );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const questionUpdated = ( question, formValues ) => ({
     type: types.questionUpdated,
-    payload: question
+    payload: {
+        question,
+        ...formValues
+    }
 });
 
 export const startDeleteQuestion = ( id ) => {

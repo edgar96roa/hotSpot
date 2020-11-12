@@ -18,6 +18,7 @@ export const types = {
     questionsSetActive: '[Questions] Set active question',
     questionsLoad: '[Questions] Load questions',
     questionsUpdated: '[Questions] Updated question',
+    questionStartUpdate: '[Questions] Start update question',
     questionsFileUrl: '[Questions] Updated image url',
     questionsDelete: '[Questions] Deleted question',
     questionsLogoutCleaning: '[Questions] Logout cleaning',

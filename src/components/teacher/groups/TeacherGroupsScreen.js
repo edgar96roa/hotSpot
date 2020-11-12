@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Grid } from "semantic-ui-react";
 import { MenuBar } from '../MenuBar';
 import { SideMenu } from '../SideMenu';
 import cx from 'classnames';
+import '../../../styles/generalStyles.css';
 
 export const TeacherGroupsScreen = () => {
 
@@ -23,7 +25,13 @@ export const TeacherGroupsScreen = () => {
             <div className="ui attached pushable" style={{height: '95vh'}}>
                 <SideMenu toggleMenu={visible}/>
                 <div className={classes}>
-                    Grupos, aquí debe de ir otro componente para manejar la información del teacher
+                    <Grid centered>
+                        <Grid.Row>
+                            <Grid.Column width={16}>
+                                Grupos del profesor
+                            </Grid.Column>
+                    </Grid.Row>
+                </Grid>
                 </div>
             </div>
         </div>

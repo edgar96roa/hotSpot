@@ -47,7 +47,7 @@ export const MenuBar = () => {
                     </Menu.Item>
 
                     <Menu.Item
-                        name='registrate'
+                        name='login'
                         active={ activeItem === 'login' }
                         onClick={ handleItemClick }
                         as={Link} to='/auth/login'
