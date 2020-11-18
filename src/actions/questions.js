@@ -1,9 +1,4 @@
 import { types } from '../types/types';
-/*export const startUploading = (file) => {
-    return ( dispatch, getState ) => {
-        console.log(file);
-    }
-}*/
 
 import { database } from "../firebase/firebaseConfig"
 import { loadQuestions } from '../helpers/loadQuestions';
@@ -16,17 +11,6 @@ export const startLoadingQuestions = ( uid ) => {
     }
 }
 
-export const refreshQuestion = ( id, question ) => ({
-    type: types.questionsUpdated,
-    payload: {
-        id,
-        question: {
-            id,
-            ...question
-        }
-    }
-})
-
 export const setQuestions = ( questions ) => {
     return {
         type: types.questionsLoad,
@@ -34,10 +18,11 @@ export const setQuestions = ( questions ) => {
     }
 }
 
+
 export const questionsStartAddNew = ( question ) => {
     return async( dispatch, getState ) => {
 
-        const uid = getState().auth.uid;
+        const uid = getState().auth.uid;//esto viene de thunk
 
         dispatch( questionAddNew(question) );
 
@@ -61,10 +46,18 @@ export const activeQuestion = ( id, question ) => ({
     }
 });
 
+export const questionClearActiveQuestion = () => ({
+    type: types.questionsClearActiveQuestion
+});
+
 export const questionStartUpdate = ( question ) => {
     return async(dispatch, getState) => {
         
         const uid = getState().auth.uid;
+
+        if( !question.url ){
+            delete NodeIterator.url;
+        }
 
         const questionToFirestore = { ...question };
 
@@ -75,11 +68,25 @@ export const questionStartUpdate = ( question ) => {
         } catch (error) {
             console.log(error);
         }
+
+        dispatch( startLoadingQuestions(uid) ); //forma lazy
+        //dispatch( refreshQuestions(question.id, question) );
+
     }
 }
 
-export const questionUpdated = ( question, formValues
-     ) => ({
+
+export const refreshQuestions = ( id, question ) => ({
+    type: types.questionsRefreshed,
+    payload: {
+        id,
+        question: {
+            id, ...question
+        }
+    }
+})
+
+export const questionUpdated = ( question ) => ({
     type: types.questionUpdated,
     payload: question
 });
@@ -100,3 +107,9 @@ export const deleteQuestion = (id) => ({
     type: types.questionsDelete,
     payload: id
 });
+
+export const startUploadingImage = ( file ) => {
+    return ( dispatch ) => {
+        console.log(file);
+    }
+}

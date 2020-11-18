@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Grid, Form, /*Image,*/ Button } from 'semantic-ui-react';
+import { Modal, Grid, Form, Image, Button } from 'semantic-ui-react';
 import { uiCloseModal, uiOpenModal } from '../../../actions/modal';
 import '../../../styles/generalStyles.css';
-import { questionsStartAddNew } from '../../../actions/questions';
+import { questionsStartAddNew, startUploadingImage } from '../../../actions/questions';
 
 export const QuestionModal = () => {
 
     const dispatch = useDispatch();
 
     const [formValues, setFormValues] = useState({
-        instrucciones: 'Instrucciones',
-        pregunta: 'Pregunta',
-        valor: '0.01'
+        instrucciones: '',
+        pregunta: '',
+        valor: ''
     });
 
     const { instrucciones, pregunta, valor } = formValues;
+
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     const handleInputChange = ({target}) => {
         setFormValues({
             ...formValues,
             [target.name]: target.value
         });
+        //console.log(formValues);
     }
 
-    //const [questionImage, setQuestionImage] = useState("https://react.semantic-ui.com/images/wireframe/image.png");
+    const [questionImage, setQuestionImage] = useState("https://react.semantic-ui.com/images/wireframe/image.png");
 
     const {modalOpen} = useSelector( state => state.modal );
 
@@ -36,15 +39,18 @@ export const QuestionModal = () => {
         dispatch( uiCloseModal() );
     }
 
-    /*const onChangeImage = (e) =>{
+    const onChangeImage = (e) =>{
         const fileQuestion = e.target.files[0];
         if(e){
-            setQuestionImage( URL.createObjectURL(e.target.files[0]));
+            setQuestionImage( URL.createObjectURL(fileQuestion));
+            setImageLoaded(true);
+            dispatch( startUploadingImage(e.target.files[0]) );
         }else {
             console.log("fallo al cargar imagen");
+            setImageLoaded(false);
         }
 
-    }*/
+    }
 
     /*const validarValor = () => {
         if(valor>10){
@@ -62,8 +68,11 @@ export const QuestionModal = () => {
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
-        dispatch( questionsStartAddNew(formValues) );
-        dispatch( uiCloseModal() );
+        if(imageLoaded === true) {
+            dispatch( questionsStartAddNew(formValues) );
+        } else {
+            dispatch( uiCloseModal() );
+        }
     }
     
     return (
@@ -89,6 +98,7 @@ export const QuestionModal = () => {
                                         <Form.Field required>
                                             <label>Instrucciones</label>
                                             <Form.Input
+                                                required
                                                 type="text"
                                                 name="instrucciones"
                                                 placeholder="Instrucciones"
@@ -128,21 +138,22 @@ export const QuestionModal = () => {
                                         <Form.Field  className="ui centered" required>
                                             <label>Archivo</label>
                                             <input
+                                                id="questionFile"
                                                 type="file"
                                                 name="questionImage"
                                                 style={{
                                                     padding: '0px',
                                                     border: '0px'
                                                 }}
-                                                //onChange={ onChangeImage }
+                                                onChange={ onChangeImage }
                                             />
                                         </Form.Field>
 
-                                        {/*
+                                        
                                         <div>
                                             <Image src={questionImage} size='large' accept="image/*" centered />
                                         </div>
-                                        */}
+                                        
 
                                     </Form>
 

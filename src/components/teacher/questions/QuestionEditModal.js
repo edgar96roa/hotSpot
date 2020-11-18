@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Grid, Form, Image, Button } from 'semantic-ui-react';
-//import { uiCloseModal, uiOpenModal } from '../../../actions/modal';
 import { useForm } from '../../../hooks/useForm';
-import { activeQuestion, questionStartUpdate } from '../../../actions/questions';
+import { activeQuestion, questionClearActiveQuestion, questionStartUpdate } from '../../../actions/questions';
 
 export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
     
@@ -13,7 +12,9 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
 
     const [formValues, handleInputChange] = useForm(question);
 
-    const handleActiveQuestion = () => dispatch(activeQuestion(id, formValues));
+    const handleActiveQuestion = () => {
+        dispatch(activeQuestion(id, {instrucciones, pregunta, valor}));
+    }
     
     const [open, setOpen] = useState(false);
 
@@ -23,21 +24,33 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
 
     }, [formValues, dispatch, id])
 
+    const onClose = () => {
+        setOpen(false);
+    }
+
+    const onOpen = () => {
+        setOpen(true);
+    }
+
+    const handleCancelar = () => {
+        setOpen(false);
+        dispatch( questionClearActiveQuestion() );
+    }
+
+    const handleEditar = () => {
+        dispatch( questionStartUpdate({...formValues, id}) );
+        dispatch( questionClearActiveQuestion() );
+        setOpen(false);
+    }
+
     return (
         <Modal
             centered
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
+            onClose={ onClose }
+            onOpen={ onOpen }
+            open={ open }
             size='large'
-            trigger={
-                <Button
-                    color='blue'
-                    icon='edit'
-                    size='mini'
-                    onClick={handleActiveQuestion}
-                />
-            }
+            trigger={<Button color='blue' icon='edit' size='mini' onClick={ handleActiveQuestion } />}
         >
         
         <Modal.Header>Editar pregunta</Modal.Header>
@@ -53,8 +66,8 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
                                         name='instrucciones'
                                         placeholder='Instrucciones'
                                         autoComplete='off'
-                                        defaultValue={instrucciones}
-                                        onChange={handleInputChange}
+                                        defaultValue={ instrucciones }
+                                        onChange={ handleInputChange }
                                     />
                                 </Form.Field>
 
@@ -65,7 +78,7 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
                                         name='pregunta'
                                         placeholder='Pregunta'
                                         autoComplete='off'
-                                        defaultValue={pregunta}
+                                        defaultValue={ pregunta }
                                         onChange={ handleInputChange }
                                     />
                                 </Form.Field>
@@ -80,7 +93,7 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
                                         name='valor'
                                         placeholder='Valor'
                                         autoComplete='off'
-                                        defaultValue={valor}
+                                        defaultValue={ valor }
                                         onChange={ handleInputChange }
                                     />
                                 </Form.Field>
@@ -112,17 +125,13 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
                     content='Cancelar'
                     labelPosition='right'
                     icon='close'
-                    onClick={() => setOpen(false)}
+                    onClick={ handleCancelar }
                 />
                 <Button
                     content='Editar'
                     labelPosition='right'
                     icon='checkmark'
-                    onClick={() => {
-                        console.log(id, instrucciones, pregunta, valor);
-                        //dispatch( questionStartUpdate(formValues) )
-                        setOpen(false)
-                    }}
+                    onClick={ handleEditar }
                     positive
                 />
             </Modal.Actions>

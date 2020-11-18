@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { Grid, Segment, Table } from 'semantic-ui-react';
 import '../../../styles/generalStyles.css';
 import { QuestionEntry } from './QuestionEntry';
-//import { QuestionEntry } from './QuestionEntry';
 import { QuestionModal } from './QuestionModal';
 
 export const QuestionsEntries = () => {

@@ -16,7 +16,7 @@ import { types } from '../types/types';
 
 const initialState = {
     questions: [{
-        id: new Date().getTime(),
+        id: null,
         instrucciones: '',
         pregunta: '',
         valor: ''
@@ -35,6 +35,12 @@ export const questionsReducer = ( state = initialState, action ) => {
                     ...action.payload
                 }
             }
+        
+            case types.questionsClearActiveQuestion:
+                return {
+                    ...state,
+                    active: null
+                }
 
         case types.questionsAddNew: //funciona, no moverle
             return {
@@ -52,6 +58,16 @@ export const questionsReducer = ( state = initialState, action ) => {
             }
 
         case types.questionsUpdated:
+            return {
+                ...state,
+                questions: state.questions.map(
+                    question => (question.id === action.payload.id)
+                        ? action.payload
+                        : question 
+                )
+            }
+
+        case types.questionsRefreshed:
             return {
                 ...state,
                 questions: state.questions.map(
