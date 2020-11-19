@@ -35,20 +35,11 @@ export const questionsReducer = ( state = initialState, action ) => {
                     ...action.payload
                 }
             }
-        
-            case types.questionsClearActiveQuestion:
-                return {
-                    ...state,
-                    active: null
-                }
 
         case types.questionsAddNew: //funciona, no moverle
             return {
                 ...state,
-                questions:[
-                    ...state.questions,
-                    action.payload
-                ]
+                questions:[ action.payload, ...state.questions ]
             }
 
         case types.questionsLoad: //funciona, no moverle
@@ -76,12 +67,25 @@ export const questionsReducer = ( state = initialState, action ) => {
                         : question 
                 )
             }
+
+        case types.questionsClearActiveQuestion:
+            return {
+                ...state,
+                active: null
+            }
         
         case types.questionsDelete: //funciona, no moverle
             return {
                 ...state,
                 active: null,
                 questions: state.questions.filter( question => question.id !== action.payload )
+            }
+
+        case types.questionsLogoutCleaning:
+            return {
+                ...state,
+                active: null,
+                notes: []
             }
 
         default:

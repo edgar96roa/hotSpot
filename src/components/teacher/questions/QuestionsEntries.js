@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Grid, Segment, Table } from 'semantic-ui-react';
 import '../../../styles/generalStyles.css';
 import { QuestionEntry } from './QuestionEntry';
-import { QuestionModal } from './QuestionModal';
+import { QuestionAddModal } from './QuestionAddModal';
 
 export const QuestionsEntries = () => {
 
@@ -14,7 +14,7 @@ export const QuestionsEntries = () => {
 
             <Grid centered className="TableCentered">
                 <Grid.Row>
-                    <Grid.Column width={10}>
+                    <Grid.Column mobile={14} tablet={14} computer={12}>
                         
                         <Segment.Group>
                         <Segment size='massive' textAlign='center'><b>Questions</b></Segment>
@@ -22,9 +22,9 @@ export const QuestionsEntries = () => {
                                 <Table celled>
                                     <Table.Header>
                                         <Table.Row>
-                                            <Table.HeaderCell width={1}>Id</Table.HeaderCell>
-                                            <Table.HeaderCell width={4}>Pregunta</Table.HeaderCell>
-                                            <Table.HeaderCell width={1}>Valor</Table.HeaderCell>
+                                            <Table.HeaderCell >Id</Table.HeaderCell>
+                                            <Table.HeaderCell >Pregunta</Table.HeaderCell>
+                                            <Table.HeaderCell >Valor</Table.HeaderCell>
                                             <Table.HeaderCell width={3}>Acciones</Table.HeaderCell>                                        
                                         </Table.Row>
                                     </Table.Header>
@@ -44,7 +44,7 @@ export const QuestionsEntries = () => {
                             </Segment.Group>
 
                             <Segment>
-                                <QuestionModal />
+                                <QuestionAddModal />
                             </Segment>
 
                         </Segment.Group>

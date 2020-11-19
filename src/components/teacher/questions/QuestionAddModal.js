@@ -5,7 +5,7 @@ import { uiCloseModal, uiOpenModal } from '../../../actions/modal';
 import '../../../styles/generalStyles.css';
 import { questionsStartAddNew, startUploadingImage } from '../../../actions/questions';
 
-export const QuestionModal = () => {
+export const QuestionAddModal = () => {
 
     const dispatch = useDispatch();
 
@@ -70,6 +70,7 @@ export const QuestionModal = () => {
         e.preventDefault();
         if(imageLoaded === true) {
             dispatch( questionsStartAddNew(formValues) );
+            dispatch( uiCloseModal() );
         } else {
             dispatch( uiCloseModal() );
         }

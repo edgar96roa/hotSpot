@@ -20,7 +20,7 @@ export const QuestionEntry = ({ id, instrucciones, pregunta, valor, archivo }) =
             <Table.Cell>{id}</Table.Cell>
             <Table.Cell>{pregunta}</Table.Cell>
             <Table.Cell>{valor}</Table.Cell>
-            <Table.Cell textAlign='center'>
+            <Table.Cell>
                 <QuestionEditModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} />
                 <QuestionActiveModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} />
                 <Button color='red' icon='times rectangle' size='mini' onClick={ handleDelete } />

@@ -1,6 +1,7 @@
+import Swal from 'sweetalert2';
 import { types } from '../types/types';
 
-import { database } from "../firebase/firebaseConfig"
+import { database } from '../firebase/firebaseConfig';
 import { loadQuestions } from '../helpers/loadQuestions';
 
 export const startLoadingQuestions = ( uid ) => {
@@ -24,18 +25,35 @@ export const questionsStartAddNew = ( question ) => {
 
         const uid = getState().auth.uid;//esto viene de thunk
 
-        dispatch( questionAddNew(question) );
-
-        await database.collection(`${ uid }/questionBank/questions`).add( question );
-
-        dispatch( startLoadingQuestions(uid) ); //forma lazy
+        try {
+            const doc = await database.collection(`${ uid }/questionBank/questions`).add( question );
+            dispatch( questionAddNew( doc.id, question ) );
+            Swal.fire({
+                title: 'Agregar pregunta',
+                text: 'La pregunta se agregó correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: '2000'
+            });
+        } catch(error) {
+            Swal.fire({
+                title: 'Agregar pregunta',
+                text: error,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: '2000'
+            });
+        }
 
     }
 }
 
-const questionAddNew = (question) => ({
+export const questionAddNew = (id, question) => ({
     type: types.questionsAddNew,
-    payload: question
+    payload: {
+        id,
+        ...question
+    }
 });
 
 export const activeQuestion = ( id, question ) => ({
@@ -64,14 +82,31 @@ export const questionStartUpdate = ( question ) => {
         delete questionToFirestore.id;
 
         try {
+            
             await database.doc(`${ uid }/questionBank/questions/${ question.id }`).update( questionToFirestore );
+            
+            dispatch( startLoadingQuestions(uid) ); //forma lazy
+            
+            Swal.fire({
+                title: 'Actualización',
+                text: 'La pregunta se actualizó correctamente',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: '2000'
+            });
+
         } catch (error) {
-            console.log(error);
+            
+            Swal.fire({
+                title: 'Actualización',
+                text: error,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: '2000'
+            });
+
         }
-
-        dispatch( startLoadingQuestions(uid) ); //forma lazy
         //dispatch( refreshQuestions(question.id, question) );
-
     }
 }
 
@@ -96,9 +131,28 @@ export const startDeleteQuestion = ( id ) => {
 
         const uid = getState().auth.uid;
 
-        await database.doc(`${ uid }/questionBank/questions/${ id }`).delete();
+        try{
+            await database.doc(`${ uid }/questionBank/questions/${ id }`).delete();
 
         dispatch( deleteQuestion(id) );
+
+        Swal.fire({
+            title: 'Eliminación',
+            text: 'La pregunta se eliminó correctamente',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: '2000'
+        });
+
+        } catch(error){
+            Swal.fire({
+                title: 'Eliminación',
+                text: error,
+                icon: 'error',
+                showConfirmButton: false,
+                timer: '2000'
+            });
+        }
 
     }
 }
@@ -113,3 +167,7 @@ export const startUploadingImage = ( file ) => {
         console.log(file);
     }
 }
+
+export const questionsLogout = () => ({
+    type: types.questionsLogoutCleaning
+})
