@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Grid, Form, Image, Button } from 'semantic-ui-react';
+import RectangleSelection from 'react-rectangle-selection';
 import { uiCloseModal, uiOpenModal } from '../../../actions/modal';
 import '../../../styles/generalStyles.css';
 import { questionsStartAddNew, startUploadingImage } from '../../../actions/questions';
@@ -50,6 +51,17 @@ export const QuestionAddModal = () => {
             setImageLoaded(false);
         }
 
+    }
+
+    const [coords, setState ] = useState(null);
+
+    const handleArea = (e, coords) => {
+        setState({
+            origin: coords.origin,
+            target: coords.target
+        });
+        console.log("Origen: ", coords.origin[0], coords.origin[1]);
+        console.log("Fin: ", coords.target[0], coords.target[1]);
     }
 
     /*const validarValor = () => {
@@ -152,7 +164,15 @@ export const QuestionAddModal = () => {
 
                                         
                                         <div>
-                                            <Image src={questionImage} size='large' accept="image/*" centered />
+                                            <RectangleSelection
+                                                onSelect={ handleArea }
+                                                style={{
+                                                backgroundColor: 'rgba(0,0,255,0.4)',
+                                                borderColor: 'blue'
+                                                }}
+                                            >
+                                                <Image src={questionImage} size='large' accept='image/*' style={{margin: '0px', minWidth: '450px'}} centered />
+                                            </RectangleSelection>
                                         </div>
                                         
 
