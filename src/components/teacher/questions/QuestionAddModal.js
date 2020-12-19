@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Grid, Form, Image, Button } from 'semantic-ui-react';
-import RectangleSelection from 'react-rectangle-selection';
 import { uiCloseModal, uiOpenModal } from '../../../actions/modal';
 import '../../../styles/generalStyles.css';
 import { questionsStartAddNew, startUploadingImage } from '../../../actions/questions';
+import { AnswerZone } from './AnswerZone';
 
 export const QuestionAddModal = () => {
 
@@ -20,7 +20,7 @@ export const QuestionAddModal = () => {
 
     const [imageLoaded, setImageLoaded] = useState(false);
 
-    const handleInputChange = ({target}) => {
+    const handleInputChange = ({ target }) => {
         setFormValues({
             ...formValues,
             [target.name]: target.value
@@ -30,38 +30,27 @@ export const QuestionAddModal = () => {
 
     const [questionImage, setQuestionImage] = useState("https://react.semantic-ui.com/images/wireframe/image.png");
 
-    const {modalOpen} = useSelector( state => state.modal );
+    const { modalOpen } = useSelector(state => state.modal);
 
     const openModal = () => {
-        dispatch( uiOpenModal() );
+        dispatch(uiOpenModal());
     }
 
     const closeModal = () => {
-        dispatch( uiCloseModal() );
+        dispatch(uiCloseModal());
     }
 
-    const onChangeImage = (e) =>{
+    const onChangeImage = (e) => {
         const fileQuestion = e.target.files[0];
-        if(e){
-            setQuestionImage( URL.createObjectURL(fileQuestion));
+        if (e) {
+            setQuestionImage(URL.createObjectURL(fileQuestion));
             setImageLoaded(true);
-            dispatch( startUploadingImage(e.target.files[0]) );
-        }else {
+            dispatch(startUploadingImage(e.target.files[0]));
+        } else {
             console.log("fallo al cargar imagen");
             setImageLoaded(false);
         }
 
-    }
-
-    const [coords, setState ] = useState(null);
-
-    const handleArea = (e, coords) => {
-        setState({
-            origin: coords.origin,
-            target: coords.target
-        });
-        console.log("Origen: ", coords.origin[0], coords.origin[1]);
-        console.log("Fin: ", coords.target[0], coords.target[1]);
     }
 
     /*const validarValor = () => {
@@ -80,14 +69,14 @@ export const QuestionAddModal = () => {
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
-        if(imageLoaded === true) {
-            dispatch( questionsStartAddNew(formValues) );
-            dispatch( uiCloseModal() );
+        if (imageLoaded === true) {
+            dispatch(questionsStartAddNew(formValues));
+            dispatch(uiCloseModal());
         } else {
-            dispatch( uiCloseModal() );
+            dispatch(uiCloseModal());
         }
     }
-    
+
     return (
 
         <Modal
@@ -100,109 +89,110 @@ export const QuestionAddModal = () => {
         >
             <Modal.Header>Agregar una nueva pregunta</Modal.Header>
             <Modal.Content>
-                
+
                 <Grid centered>
                     <Grid.Row>
                         <Grid.Column width={16}>
-                                
-                                    
-                                    <Form>
 
-                                        <Form.Field required>
-                                            <label>Instrucciones</label>
-                                            <Form.Input
-                                                required
-                                                type="text"
-                                                name="instrucciones"
-                                                placeholder="Instrucciones"
-                                                autoComplete="off"
-                                                value={ instrucciones }
-                                                onChange={ handleInputChange }
-                                            />
-                                        </Form.Field>
 
-                                        <Form.Field required>
-                                            <label>Pregunta</label>
-                                            <Form.Input
-                                                type="text"
-                                                name="pregunta"
-                                                placeholder="Pregunta"
-                                                autoComplete="off"
-                                                value={ pregunta }
-                                                onChange={ handleInputChange }
-                                            />
-                                        </Form.Field>
+                            <Form>
 
-                                        <Form.Field required>
-                                            <label>Valor</label>
-                                            <Form.Input
-                                                type="number"
-                                                min="0.01"
-                                                max="10" 
-                                                step="0.01"
-                                                name="valor"
-                                                placeholder="Valor"
-                                                autoComplete="off"
-                                                value={ valor }
-                                                onChange={ handleInputChange }
-                                            />
-                                        </Form.Field>
+                                <Form.Field required>
+                                    <label>Instrucciones</label>
+                                    <Form.Input
+                                        required
+                                        type="text"
+                                        name="instrucciones"
+                                        placeholder="Instrucciones"
+                                        autoComplete="off"
+                                        value={instrucciones}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Field>
 
-                                        <Form.Field  className="ui centered" required>
-                                            <label>Archivo</label>
-                                            <input
-                                                id="questionFile"
-                                                type="file"
-                                                name="questionImage"
-                                                style={{
-                                                    padding: '0px',
-                                                    border: '0px'
-                                                }}
-                                                onChange={ onChangeImage }
-                                            />
-                                        </Form.Field>
+                                <Form.Field required>
+                                    <label>Pregunta</label>
+                                    <Form.Input
+                                        type="text"
+                                        name="pregunta"
+                                        placeholder="Pregunta"
+                                        autoComplete="off"
+                                        value={pregunta}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Field>
 
-                                        
-                                        <div>
-                                            <RectangleSelection
-                                                onSelect={ handleArea }
-                                                style={{
-                                                backgroundColor: 'rgba(0,0,255,0.4)',
-                                                borderColor: 'blue'
-                                                }}
-                                            >
-                                                <Image src={questionImage} size='large' accept='image/*' style={{margin: '0px', minWidth: '450px'}} centered />
-                                            </RectangleSelection>
-                                        </div>
-                                        
+                                <Form.Field required>
+                                    <label>Valor</label>
+                                    <Form.Input
+                                        type="number"
+                                        min="0.01"
+                                        max="10"
+                                        step="0.01"
+                                        name="valor"
+                                        placeholder="Valor"
+                                        autoComplete="off"
+                                        value={valor}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Field>
 
-                                    </Form>
+                                <Form.Field className="ui centered" required>
+                                    <label>Archivo</label>
+                                    <input
+                                        id="questionFile"
+                                        type="file"
+                                        name="questionImage"
+                                        style={{
+                                            padding: '0px',
+                                            border: '0px'
+                                        }}
+                                        onChange={onChangeImage}
+                                    />
+                                </Form.Field>
 
-                                
+
+                            </Form>
+
+                            <Form style={{width: '450px'}}>
+                                <div id="AnswerImage" style={{ margin: '0px', width: '100%'}}>
+                                    <Image src={questionImage} size='large' accept='image/*' style={{ margin: '0px', width: '450px' }} centered />
+                                    {/*
+                                                (imageLoaded === true) ?
+                                            */
+
+                                        <AnswerZone />
+
+                                        /*        
+                                                : <div>{imageLoaded}</div>*/
+                                    }
+                                </div>
+                            </Form>
+
                         </Grid.Column>
                     </Grid.Row>
 
                 </Grid>
-                
+
             </Modal.Content>
-            
+
             <Modal.Actions>
-                <Button 
+                <Button
                     color='grey'
                     content="Cancelar"
                     labelPosition='right'
                     icon='close'
-                    onClick={ closeModal }
+                    onClick={closeModal}
                 />
                 <Button
                     content="Subir"
                     labelPosition='right'
                     icon='checkmark'
-                    onClick={ handleSubmitForm }
+                    onClick={handleSubmitForm}
                     positive
                 />
             </Modal.Actions>
 
-        </Modal>        
+        </Modal>
     );
 }
