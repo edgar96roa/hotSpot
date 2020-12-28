@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ResizableReact from 'react-resizable-rotatable-draggable';
+import { showAlertWindow } from '../../../helpers/resizeAnswerZone';
 
 export const AnswerZone = () => {
 
@@ -40,39 +41,29 @@ export const AnswerZone = () => {
                 ...area,
                 top: top + deltaY,
                 left: left + deltaX
-            });//ok
+            });
         }
 
-        //para cuando sea ladoA menor a 0 en esquina 1
+        //when SideA is < than 0 on the top
         if (sideA < 0) {
             setArea({ ...area, top: 0 });//ok
         }
 
-        //para cuando ladoB sea mayor al width de la imagen
+        //when SideB is > than image's width
         if (sideB > imageAnswer.width) {
-            setArea({ ...area, left: imageAnswer.width - width });//ok
+            setArea({ ...area, left: imageAnswer.width - width });
         }
 
+        //when SideC is > than image's height
         if (sideC > imageAnswer.height) {
             setArea({ ...area, top: imageAnswer.height - area.height });//ok
         }
 
+        //when SideD is < than image's left
         if (sideD < 0) {
             setArea({ ...area, left: 0 });//ok
         }
 
-    }
-
-    const handleDragStart = () => {
-        console.log("handleDragStart");
-        // console.log("Área antes: "+JSON.stringify(area));
-        // console.log("Lados antes: "+JSON.stringify(sides));
-    }
-
-    const handleDragEnd = () => {
-        console.log("handleDragEnd");
-        // console.log("Área después: "+JSON.stringify(area));
-        // console.log("Lados después: "+JSON.stringify(sides));
     }
 
     const handleResize = (style, isShiftKey, type) => {
@@ -111,29 +102,35 @@ export const AnswerZone = () => {
         }
 
         if (sideB > imageAnswer.width && sideC > imageAnswer.height) {
+            showAlertWindow();
             setTimeout(() => {
-                setArea({ ...area, left: sideD, width: imageAnswer.width-sideD, top: sideA, height: imageAnswer.height-sideA });
-                setSides({ ...sides, sideB: imageAnswer.width-left, sideC: imageAnswer.height-top });
-                console.log("validando esquina 3");
+                setArea({ ...area, left: sideD, width: imageAnswer.width - sideD, top: sideA, height: imageAnswer.height - sideA });
+                setSides({ ...sides, sideB: imageAnswer.width - left, sideC: imageAnswer.height - top });
             }, 2000);
-        } else if (sideB > imageAnswer.width) {
+            setArea({ ...area, left: sideD, width: imageAnswer.width - sideD, top: sideA, height: imageAnswer.height - sideA });
+            setSides({ ...sides, sideB: imageAnswer.width - left, sideC: imageAnswer.height - top });
+        } else if (sideB > imageAnswer.width || imageAnswer.width - sideB <= 10) {
             //returns answer.width with imageAnswer.width pixels
+            showAlertWindow();
+            setArea({ ...area, left: sideD, width: imageAnswer.width - sideD });
+            setSides({ ...sides, sideB: imageAnswer.width - left });
             setTimeout(() => {
-                setArea({ ...area, left: sideD, width: imageAnswer.width-sideD });
-                setSides({ ...sides, sideB: imageAnswer.width-left });
-                console.log(2);
+                if (sideB > imageAnswer.width) {
+                    setArea({ ...area, left: sideD, width: imageAnswer.width - sideD });
+                    setSides({ ...sides, sideB: imageAnswer.width - left });
+                }
             }, 2000);
-            // setArea({ ...area, width: imageAnswer.width, left: 0 });
-            // setSides({ ...sides, sideB: imageAnswer.width });
-        }else if (sideC > imageAnswer.height) {
+            setArea({ ...area, left: sideD, width: imageAnswer.width - sideD });
+            setSides({ ...sides, sideB: imageAnswer.width - left });
+        } else if (sideC > imageAnswer.height || imageAnswer.height - sideC <= 10 ) {
             //returns answer.height with imageAnswer.height pixels
+            showAlertWindow();
             setTimeout(() => {
-                setArea({ ...area,  top: sideA, height: imageAnswer.height-sideA });
-                setSides({ ...sides, sideC: imageAnswer.height-top });
-                console.log(1);
+                setArea({ ...area, top: sideA, height: imageAnswer.height - sideA });
+                setSides({ ...sides, sideC: imageAnswer.height - top });
             }, 2000);
-            // setArea({ ...area, height: imageAnswer.height, top: 0 });
-            // setSides({ ...sides, sideC: imageAnswer.height });
+            setArea({ ...area, top: sideA, height: imageAnswer.height - sideA });
+            setSides({ ...sides, sideC: imageAnswer.height - top });
         }
 
         if (sideD < 0) {
@@ -154,16 +151,9 @@ export const AnswerZone = () => {
                 minWidth={50}
                 minHeight={50}
                 zoomable='n, w, s, e, nw, ne, se, sw'
-                // onRotate={handleRotate}
                 rotatable={false}
-                // onRotateStart={this.handleRotateStart}
-                // onRotateEnd={this.handleRotateEnd}
-                // onResizeStart={this.handleResizeStart}
                 onResize={handleResize}
-                // onResizeEnd={this.handleUp}
-                onDragStart={handleDragStart}
                 onDrag={handleDrag}
-                onDragEnd={handleDragEnd}
             />
         </>
     )

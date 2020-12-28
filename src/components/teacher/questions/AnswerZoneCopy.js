@@ -41,8 +41,7 @@ export const AnswerZoneCopy = () => {
             sideD: area.left
         });
 
-        ////////////empieza esquina 1
-        //esquina 1
+        //when SideA is >= than image's top and sideS is >= than image's left
         if (sideA >= 0 && sideD >= 0) {
             setArea({
                 ...area,
@@ -51,97 +50,30 @@ export const AnswerZoneCopy = () => {
             });//ok
         }
 
-        //para cuando ladoD sea menor a 0 en esquina 1
+        //when SideD is < than image's left
         if (sideD < 0) {
             setArea({ ...area, left: 0 });//ok
         }
 
-        //para cuando sea ladoA menor a 0 en esquina 1
+        //when SideA is < than image's top
         if (sideA < 0) {
             setArea({ ...area, top: 0 });//ok
         }
-        ////////////termina esquina 1
 
-        ////////////empieza esquina 2
-        //esquina 2
-        // if (sideA >= 0 && sideB <= imageAnswer.width) {
-        //     setArea({
-        //         ...area,
-        //         top: top + deltaY,
-        //         left: left + deltaX
-        //     });//ok
-        //     console.log("validando esquina 2");
-        // }
-
-        // //para cuando sea ladoA menor a 0 en esquina 1
-        // if (sideA < 0) {
-        //     setArea({ ...area, top: 0 });//ok
-        //     console.log("SideA menor a 0");
-        // }
-
-        //para cuando ladoB sea mayor al width de la imagen
+        //when SideB is > than image's width
         if (sideB > imageAnswer.width) {
-            setArea({ ...area, left: imageAnswer.width - width });//ok
-            console.log("SideB mayor al imageAnswer.width");
-        }
-        ////////////termina esquina 2
-
-        ////////////empieza esquina 3
-        //esquina 3
-        // if (sideC <= imageAnswer.height && sideB <= imageAnswer.width) {
-        //     setArea({
-        //         ...area,
-        //         top: top + deltaY,
-        //         left: left + deltaX
-        //     });//ok
-        //     console.log("validando esquina 3");
-        // }
-
-        // if (sideB > imageAnswer.width) {
-        //     setArea({ ...area, left: imageAnswer.width-width});
-        //     console.log("SideB mayor al imageAnswer.width");
-        // }
+            setArea({ ...area, left: imageAnswer.width - width });
+        }// ends corner 2
 
         if (sideC > imageAnswer.height) {
-            setArea({ ...area, top: imageAnswer.height - area.height });//ok
-            console.log("SideC mayor al imageAnswer.height");
-        }
-        ////////////termina esquina 3
+            setArea({ ...area, top: imageAnswer.height - area.height });
+        }// ends corner 3
 
-        ////////////empieza esquina 4
-        //esquina 4
-        // if (sideD >= 0) {
-        //     setArea({
-        //         ...area,
-        //         top: top + deltaY,
-        //         left: left + deltaX
-        //     });//ok
-        //     console.log("Validando esquina 4");
-        // }
-
-        // if (sideC > imageAnswer.height) {
-        //     setArea({ ...area, top: imageAnswer.height - area.height });//ok
-        //     console.log("SideC mayor al imageAnswer.height");
-        // }
 
         if (sideD < 0) {
-            setArea({ ...area, left: 0 });//ok
-            console.log("SideD menor a 0");
-        }
-        ////////////termina esquina 4
+            setArea({ ...area, left: 0 });
+        }// ends corner 4
 
-    }
-
-    const handleDragStart = () => {
-        console.log("handleDragStart");
-        // console.log("Área antes: "+JSON.stringify(area));
-        // console.log("Lados antes: "+JSON.stringify(sides));
-    }
-
-    const handleDragEnd = () => {
-        console.log("handleDragEnd");
-        // console.log("Área después: "+JSON.stringify(area));
-        // console.log("Lados después: "+JSON.stringify(sides));
     }
 
     const handleResize = (style, isShiftKey, type) => {
@@ -182,7 +114,7 @@ export const AnswerZoneCopy = () => {
         if (sideB > imageAnswer.width) {
             //returns answer.width with imageAnswer.width pixels
             setArea({ ...area, width: imageAnswer.width - area.left });
-            setSides({...sides, sideB:(imageAnswer.width-area.left)});
+            setSides({ ...sides, sideB: (imageAnswer.width - area.left) });
         }
 
         if (sideC > imageAnswer.height) {
@@ -215,9 +147,9 @@ export const AnswerZoneCopy = () => {
                 // onResizeStart={this.handleResizeStart}
                 onResize={handleResize}
                 // onResizeEnd={this.handleUp}
-                onDragStart={handleDragStart}
+                // onDragStart={handleDragStart}
                 onDrag={handleDrag}
-                onDragEnd={handleDragEnd}
+                // onDragEnd={handleDragEnd}
             />
         </>
     )
