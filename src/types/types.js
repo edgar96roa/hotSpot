@@ -24,5 +24,7 @@ export const types = {
     questionsFileUrl: '[Questions] Updated image url',
     questionsDelete: '[Questions] Deleted question',
     questionsLogoutCleaning: '[Questions] Logout cleaning',
+    questionsSendAnswer: '[Questions] Send answer',
+
 
 }

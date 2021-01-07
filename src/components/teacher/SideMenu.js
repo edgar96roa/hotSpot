@@ -55,10 +55,20 @@ export const SideMenu = (props) => {
                     name='questions'
                     active={ activeItem === 'questions' }
                     onClick={ handleItemClick }
-                    as={Link} to='/teacher/questions'
+                    as={Link} to='/teacher/questions/hotSpot'
                 >
                     <Icon name='question' size='large' />
-                    Preguntas
+                    Pregunta Hot Spot
+                </Menu.Item>
+
+                <Menu.Item
+                    name='questions1'
+                    active={ activeItem === 'questions1' }
+                    onClick={ handleItemClick }
+                    as={Link} to='/teacher/questions/hotObject'
+                >
+                    <Icon name='question' size='large' />
+                    Pregunta Hot Object
                 </Menu.Item>
 
             </Menu>

@@ -1,6 +1,5 @@
 import Swal from 'sweetalert2';
 import { types } from '../types/types';
-
 import { database } from '../firebase/firebaseConfig';
 import { loadQuestions } from '../helpers/loadQuestions';
 
@@ -40,8 +39,7 @@ export const questionsStartAddNew = ( question ) => {
                 title: 'Agregar pregunta',
                 text: error,
                 icon: 'error',
-                showConfirmButton: false,
-                timer: '2000'
+                showConfirmButton: true
             });
         }
 
@@ -70,7 +68,7 @@ export const questionClearActiveQuestion = () => ({
 
 export const questionStartUpdate = ( question ) => {
     return async(dispatch, getState) => {
-        
+
         const uid = getState().auth.uid;
 
         if( !question.url ){
@@ -82,11 +80,11 @@ export const questionStartUpdate = ( question ) => {
         delete questionToFirestore.id;
 
         try {
-            
+
             await database.doc(`${ uid }/questionBank/questions/${ question.id }`).update( questionToFirestore );
-            
+
             dispatch( startLoadingQuestions(uid) ); //forma lazy
-            
+
             Swal.fire({
                 title: 'Actualización',
                 text: 'La pregunta se actualizó correctamente',
@@ -110,7 +108,6 @@ export const questionStartUpdate = ( question ) => {
     }
 }
 
-
 export const refreshQuestions = ( id, question ) => ({
     type: types.questionsRefreshed,
     payload: {
@@ -119,7 +116,7 @@ export const refreshQuestions = ( id, question ) => ({
             id, ...question
         }
     }
-})
+});
 
 export const questionUpdated = ( question ) => ({
     type: types.questionUpdated,
@@ -153,7 +150,6 @@ export const startDeleteQuestion = ( id ) => {
                 timer: '2000'
             });
         }
-
     }
 }
 
@@ -162,12 +158,27 @@ export const deleteQuestion = (id) => ({
     payload: id
 });
 
-export const startUploadingImage = ( file ) => {
-    return ( dispatch ) => {
-        console.log(file);
+export const questionsLogout = () => ({
+    type: types.questionsLogoutCleaning
+});
+
+export const questionsStartSendAnswer = ( answer ) => {
+    return ( dispatch, getState ) => {
+        try {
+            dispatch( questionSendAnswer(answer) );
+        } catch(error) {
+            Swal.fire({
+                title: 'Enviar respuesta',
+                text: error,
+                icon: 'error',
+                showConfirmButton: true
+            });
+        }
+
     }
 }
 
-export const questionsLogout = () => ({
-    type: types.questionsLogoutCleaning
-})
+export const questionSendAnswer = ( answer ) => ({
+    type: types.questionsSendAnswer,
+    payload: answer
+});

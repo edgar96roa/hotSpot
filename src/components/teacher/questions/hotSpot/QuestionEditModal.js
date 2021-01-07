@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Grid, Form, Image, Button } from 'semantic-ui-react';
-import { useForm } from '../../../hooks/useForm';
-import { activeQuestion, questionClearActiveQuestion, questionStartUpdate } from '../../../actions/questions';
+import { useForm } from '../../../../hooks/useForm';
+import { activeQuestion, questionClearActiveQuestion, questionStartUpdate } from '../../../../actions/questions';
 
 export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
     

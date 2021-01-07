@@ -5,9 +5,9 @@
         active: {
             id: '14y32ouhtibgjgfhr7',
             instrucciones: '',
-            pregunta: '',
+            pregunta:archivo '',
             valor: '',
-            archivo: ''
+            imagen: ''
         }
     }
 
@@ -17,9 +17,10 @@ import { types } from '../types/types';
 const initialState = {
     questions: [{
         id: null,
+        imagen: '',
         instrucciones: '',
         pregunta: '',
-        valor: ''
+        valor: '',
     }],
     active: null
 }
@@ -85,7 +86,7 @@ export const questionsReducer = ( state = initialState, action ) => {
             return {
                 ...state,
                 active: null,
-                notes: []
+                questions: []
             }
 
         default:

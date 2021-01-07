@@ -7,29 +7,29 @@ export const MenuBar = () => {
 
     const initialState = "/auth/login"
 
-    const [activeItem, setActiveItem] = useState( initialState );
+    const [activeItem, setActiveItem] = useState(initialState);
 
-    const handleItemClick = (e, { name }) =>  {
-        setActiveItem({ 
+    const handleItemClick = (e, { name }) => {
+        setActiveItem({
             activeItem: name
         });
     }
 
     return (
         <div className="MenuBar">
-           <Menu inverted tabular>
+            <Menu inverted tabular>
                 <Menu.Item>
                     <Image
                         size="tiny"
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Logo_Instituto_Polit%C3%A9cnico_Nacional.png/300px-Logo_Instituto_Polit%C3%A9cnico_Nacional.png"
                     />
                 </Menu.Item>
-            
+
                 <Menu.Menu>
-                    <Menu.Item 
+                    <Menu.Item
                         name='Conocenos'
-                        active={ activeItem === 'aboutUs' }
-                        onClick={ handleItemClick }
+                        active={activeItem === 'aboutUs'}
+                        onClick={handleItemClick}
                         as={Link} to='/auth/aboutUs'
                     >
                         Cónocenos
@@ -39,8 +39,8 @@ export const MenuBar = () => {
                 <Menu.Menu position="right">
                     <Menu.Item
                         name='registrate'
-                        active={ activeItem === 'register' }
-                        onClick={ handleItemClick }
+                        active={activeItem === 'register'}
+                        onClick={handleItemClick}
                         as={Link} to='/auth/register'
                     >
                         Regístrate
@@ -48,15 +48,15 @@ export const MenuBar = () => {
 
                     <Menu.Item
                         name='login'
-                        active={ activeItem === 'login' }
-                        onClick={ handleItemClick }
+                        active={activeItem === 'login'}
+                        onClick={handleItemClick}
                         as={Link} to='/auth/login'
                     >
                         Login
                     </Menu.Item>
                 </Menu.Menu>
-            
-            </Menu> 
+
+            </Menu>
         </div>
     )
 }

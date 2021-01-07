@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { MenuBar } from '../MenuBar';
-import { SideMenu } from '../SideMenu';
+import { MenuBar } from '../../MenuBar';
+import { SideMenu } from '../../SideMenu';
 //import cx from 'classnames';
 import { QuestionsEntries } from './QuestionsEntries';
 
-export const TeacherQuestionsScreen = () => {
+export const TeacherQuestionsHotSpotScreen = () => {
     
     const [visible, setVisible] = useState(false);
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Grid, Form, Image, Button } from 'semantic-ui-react';
-import { uiCloseModal, uiOpenModal } from '../../../actions/modal';
-import { questionsStartAddNew, startUploadingImage } from '../../../actions/questions';
+import { uiCloseModal, uiOpenModal } from '../../../../actions/modal';
+import { questionsStartAddNew } from '../../../../actions/questions';
 import ResizableReact from 'react-resizable-rotatable-draggable';
-import { showAlertWindow } from '../../../helpers/resizeAnswerZone';
-import '../../../styles/generalStyles.css';
+import { showAlertWindow } from '../../../../helpers/resizeAnswerZone';
+import '../../../../styles/generalStyles.css';
 
 export const QuestionAddModal = () => {
 
@@ -26,13 +26,11 @@ export const QuestionAddModal = () => {
         sideD: area.left
     });
 
-    const [questionImage, setQuestionImage] = useState('https://react.semantic-ui.com/images/wireframe/image.png');
-
     const [formValues, setFormValues] = useState({
         instrucciones: '',
         pregunta: '',
         valor: 0,
-        imagen: questionImage,
+        imagen: 'https://react.semantic-ui.com/images/wireframe/image.png',
         lados: {
             ladoA: area.top,
             ladoB: area.width + area.left,
@@ -41,7 +39,7 @@ export const QuestionAddModal = () => {
         }
     });
 
-    const { instrucciones, pregunta, valor } = formValues;
+    const { instrucciones, pregunta, valor, imagen } = formValues;
 
     const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -129,14 +127,10 @@ export const QuestionAddModal = () => {
             sideD: left // left
         });
 
-        console.log("sides: ",sides);
-
         setFormValues({
             ...formValues,
             lados: sides
         });
-
-        console.log("formValues: ",formValues);
 
         if (sideA < 0) {
             //returns answer.top in 0 pixels
@@ -183,27 +177,6 @@ export const QuestionAddModal = () => {
 
     }
 
-    const onChangeImage = (e) => {
-        const fileQuestion = e.target.files[0];
-        if (e) {
-            setQuestionImage(URL.createObjectURL(fileQuestion));
-            setFormValues({...formValues, imagen: fileQuestion});
-            setImageLoaded(true);
-            dispatch(startUploadingImage(e.target.files[0]));
-        } else {
-            setImageLoaded(false);
-        }
-
-    }
-
-    useEffect(() => {
-        validateForm();
-    }, [formValues]);
-
-    useEffect(() => {
-        validateForm();
-    }, [imageLoaded]);
-
     const validateForm = () => {
 
         if (formValues.instrucciones.length > 0) {
@@ -224,12 +197,43 @@ export const QuestionAddModal = () => {
             setUploadButton(true);
         }
 
-        if (imageLoaded === false) {
+        if (formValues.imagen === 'https://react.semantic-ui.com/images/wireframe/image.png') {
             setUploadButton(true);
+            setImageLoaded(false);
         } else {
             setUploadButton(false);
+            setImageLoaded(true);
         }
+
     }
+
+    useEffect(() => {
+        if (formValues.instrucciones.length > 0) {
+            setUploadButton(false);
+        } else {
+            setUploadButton(true);
+        }
+
+        if (formValues.pregunta.length > 0) {
+            setUploadButton(false);
+        } else {
+            setUploadButton(true);
+        }
+
+        if (formValues.valor > 0 && formValues.valor <= 10) {
+            setUploadButton(false);
+        } else {
+            setUploadButton(true);
+        }
+
+        if (formValues.imagen === 'https://react.semantic-ui.com/images/wireframe/image.png') {
+            setUploadButton(true);
+            setImageLoaded(false);
+        } else {
+            setUploadButton(false);
+            setImageLoaded(true);
+        }
+    }, [formValues]);
 
     const handleInputChange = ({ target }) => {
         validateForm();
@@ -247,13 +251,26 @@ export const QuestionAddModal = () => {
 
     const closeModal = () => {
         dispatch(uiCloseModal());
+        setArea({
+            top: 0,
+            width: 100,
+            height: 100,
+            left: 0,
+            rotateAngle: 0
+        });
         setFormValues({
             ...formValues,
             instrucciones: '',
             pregunta: '',
             valor: 0,
-            questionImage: 'https://react.semantic-ui.com/images/wireframe/image.png'
-        })
+            imagen: 'https://react.semantic-ui.com/images/wireframe/image.png',
+            lados: {
+                ladoA: area.top,
+                ladoB: area.width + area.left,
+                ladoC: area.height + area.top,
+                ladoD: area.left
+            }
+        });
     }
 
     const handleSubmitForm = (e) => {
@@ -327,27 +344,25 @@ export const QuestionAddModal = () => {
                                     />
                                 </Form.Field>
 
-                                <Form.Field className="ui centered" required>
-                                    <label>Archivo</label>
+                                <Form.Field required>
+                                    <label>Link de imagen</label>
                                     <Form.Input
-                                        id="questionFile"
-                                        type="file"
-                                        name="questionImage"
-                                        style={{
-                                            padding: '0px',
-                                            border: '0px'
-                                        }}
-                                        onChange={onChangeImage}
+                                        type="text"
+                                        name="imagen"
+                                        placeholder="Link de imagen"
+                                        autoComplete="off"
+                                        value={imagen}
+                                        onChange={handleInputChange}
                                     />
                                 </Form.Field>
-
 
                             </Form>
 
                             <Form style={{ width: '450px' }}>
                                 <div id="AnswerImage" style={{ margin: '0px', width: '100%' }}>
 
-                                    <Image src={questionImage} size='large' accept='image/*' style={{ margin: '0px', width: '450px' }} centered />
+                                    <Image src={imagen} size='large' accept='image/*' style={{ margin: '0px', width: '450px' }} centered />
+
 
                                     {
                                         (imageLoaded === true) ?
@@ -367,6 +382,7 @@ export const QuestionAddModal = () => {
                                             />
                                             : <div>{imageLoaded}</div>
                                     }
+
                                 </div>
                             </Form>
 
