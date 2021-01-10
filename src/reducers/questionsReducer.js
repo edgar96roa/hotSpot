@@ -22,10 +22,10 @@ const initialState = {
         pregunta: '',
         valor: '',
     }],
-    active: null
+    active: null,
 }
 
-export const questionsReducer = ( state = initialState, action ) => {
+export const questionsReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
@@ -40,13 +40,13 @@ export const questionsReducer = ( state = initialState, action ) => {
         case types.questionsAddNew: //funciona, no moverle
             return {
                 ...state,
-                questions:[ action.payload, ...state.questions ]
+                questions: [action.payload, ...state.questions]
             }
 
         case types.questionsLoad: //funciona, no moverle
             return {
                 ...state,
-                questions: [ ...action.payload ]
+                questions: [...action.payload]
             }
 
         case types.questionsUpdated:
@@ -55,7 +55,7 @@ export const questionsReducer = ( state = initialState, action ) => {
                 questions: state.questions.map(
                     question => (question.id === action.payload.id)
                         ? action.payload
-                        : question 
+                        : question
                 )
             }
 
@@ -65,7 +65,7 @@ export const questionsReducer = ( state = initialState, action ) => {
                 questions: state.questions.map(
                     question => (question.id === action.payload.id)
                         ? action.payload
-                        : question 
+                        : question
                 )
             }
 
@@ -74,12 +74,12 @@ export const questionsReducer = ( state = initialState, action ) => {
                 ...state,
                 active: null
             }
-        
+
         case types.questionsDelete: //funciona, no moverle
             return {
                 ...state,
                 active: null,
-                questions: state.questions.filter( question => question.id !== action.payload )
+                questions: state.questions.filter(question => question.id !== action.payload)
             }
 
         case types.questionsLogoutCleaning:

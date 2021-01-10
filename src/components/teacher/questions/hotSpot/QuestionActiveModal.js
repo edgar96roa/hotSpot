@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Modal, Header, Image, Icon, Button } from 'semantic-ui-react';
+import { answersSetAnswer, answersUpdateAnswer } from '../../../../actions/answers';
 import { activeQuestion, questionClearActiveQuestion } from '../../../../actions/questions';
 import '../../../../styles/generalStyles.css';
 
@@ -8,11 +9,7 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
 
     const dispatch = useDispatch();
 
-    const onSelectViewQuestion = () => {
-        dispatch(
-            activeQuestion(id, { imagen, instrucciones, pregunta, valor })//de aquí vamos al archivo questions de la carpeta actions
-        );
-    }
+    const answers = useSelector(state => state.answers.answers);
 
     const [styles, setStyles] = useState({
         left: '0px',
@@ -22,12 +19,22 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
 
     const { left, top, opacity } = styles;
 
+    const idReactivo = 0;
+
     const [coords, setCoords] = useState({
         xCoord: 0,
         yCoord: 0
     });
 
+    const { xCoord, yCoord } = coords;
+
     const [open, setOpen] = useState(false);
+
+    const onSelectViewQuestion = () => {
+        dispatch(
+            activeQuestion(id, { imagen, instrucciones, pregunta, valor })//de aquí vamos al archivo questions de la carpeta actions
+        );
+    }
 
     const onClose = () => {
         setOpen(false);
@@ -86,6 +93,17 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
             top: topStyle,
             opacity: 1.0
         });
+
+        const respuesta = xCoordinate + "," + yCoordinate;
+
+        const pregunta = { id, idReactivo, respuesta };
+
+        answers.forEach(answer => {
+            if (answer.id === id) {
+                dispatch( answersUpdateAnswer(pregunta) );
+            }
+        });
+
     }
 
     const hideIcon = () => {
@@ -104,7 +122,22 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
     }
 
     const handleSubmitAnswer = () => {
-        console.log(coords);
+
+        const respuesta = xCoord + "," + yCoord;
+
+        let exists = false;
+
+        const answer = { id, idReactivo, respuesta };
+
+        answers.forEach(answer => {
+            if (answer.id === id) {
+                exists = true;
+            } 
+        });
+
+        if(!exists){
+            dispatch(answersSetAnswer(answer));
+        }
     }
 
     return (

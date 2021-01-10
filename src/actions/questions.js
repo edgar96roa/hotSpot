@@ -161,24 +161,3 @@ export const deleteQuestion = (id) => ({
 export const questionsLogout = () => ({
     type: types.questionsLogoutCleaning
 });
-
-export const questionsStartSendAnswer = ( answer ) => {
-    return ( dispatch, getState ) => {
-        try {
-            dispatch( questionSendAnswer(answer) );
-        } catch(error) {
-            Swal.fire({
-                title: 'Enviar respuesta',
-                text: error,
-                icon: 'error',
-                showConfirmButton: true
-            });
-        }
-
-    }
-}
-
-export const questionSendAnswer = ( answer ) => ({
-    type: types.questionsSendAnswer,
-    payload: answer
-});
