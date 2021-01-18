@@ -16,6 +16,7 @@ import { DashboardRoutesTeacher } from './DashboardRoutesTeacher';
 import { PrivateRouteStudent } from './PrivateRouteStudent';
 import { DashboardRoutesStudent } from './DashboardRoutesStudent';
 import { startLoadingQuestions } from '../actions/questions';
+import { startLoadingHotObjectQuestions } from '../actions/hotObjectquestions';
 
 export const AppRouter = () => {
 
@@ -34,7 +35,9 @@ export const AppRouter = () => {
                 dispatch( login(user.uid, user.displayName) );
                 setIsLoggedIn(true);
 
-                dispatch( startLoadingQuestions( user.uid ) )
+                dispatch( startLoadingQuestions( user.uid ) );
+
+                dispatch( startLoadingHotObjectQuestions( user.uid ) );
             }  
             else{
                 setIsLoggedIn(false);

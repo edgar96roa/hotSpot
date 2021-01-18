@@ -28,4 +28,15 @@ export const types = {
     answersSetAnswer: '[Answers] Set answer',
     answersUpdateAnswer: '[Answers] Update answer',
     answersAddAnswer: '[Answers] Add answer',
+
+    questionsHotObjectStartAddNew: '[Questions] Start add new hot object question',
+    questionsHotObjectAddNew: '[Questions] New hot object question',
+    questionsHotObjectSetActive: '[Questions] Set active hot object question',
+    questionsHotObjectClearActiveQuestion: '[Questions] Clear active hot object question',
+    questionsHotObjectLoad: '[Questions] Load hot object questions',
+    questionsHotObjectUpdated: '[Questions] Updated hot object question',
+    questionsHotObjectRefreshed: '[Questions] Refresed hot object questions',
+    questionHotObjectStartUpdate: '[Questions] Start update hot object question',
+    questionsHotObjectDelete: '[Questions] Deleted hot object question',
+    questionsHotObjectLogoutCleaning: '[Questions] Logout cleaning'
 }

@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { authReducer } from '../reducers/authReducer';
 import { uiReducer } from '../reducers/uiReducer';
 import { questionsReducer } from '../reducers/questionsReducer';
+import { questionsHotObjectReducer } from '../reducers/questionsHotObjectReducer';
 import { answersReducer } from '../reducers/answersReducer';
 import { modalReducer } from '../reducers/modalReducer';
 
@@ -13,6 +14,7 @@ const reducers = combineReducers({
     auth: authReducer,//tendremos el reducer auth que viene de authReducer, esto es de ES6
     ui: uiReducer,
     questions: questionsReducer,
+    questionsHotObject: questionsHotObjectReducer,
     answers: answersReducer,
     modal: modalReducer,
 });

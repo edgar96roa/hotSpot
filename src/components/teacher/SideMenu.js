@@ -25,6 +25,9 @@ export const SideMenu = (props) => {
             <Menu className={classes}>
                 <Menu.Item
                     name='home'
+                    active={ activeItem === 'home' }
+                    onClick={ handleItemClick }
+                    as={Link} to='/teacher/home'
                 >
                     <Icon name='home' size='large' />
                     Inicio
