@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Modal, Header, Image, Icon, Button } from 'semantic-ui-react';
-import { answersSetAnswer, answersUpdateAnswer } from '../../../../actions/answers';
+import { useDispatch } from 'react-redux';
+import { Grid, Modal, Header, Button } from 'semantic-ui-react';
+//import { answersSetAnswer, answersUpdateAnswer } from '../../../../actions/answers';
 import { activeQuestion, questionClearActiveQuestion } from '../../../../actions/questions';
 import '../../../../styles/generalStyles.css';
 
@@ -9,7 +9,7 @@ export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
 
     const dispatch = useDispatch();
 
-    const answers = useSelector(state => state.answers.answers);
+    //const answers = useSelector(state => state.answers.answers);
 
     const [open, setOpen] = useState(false);
 
@@ -73,10 +73,9 @@ export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
                         <Grid.Column width={16}>
                             {
                                 reactivos.map(reactivo => (
-                                    <div
-                                        key={reactivo.id}
-                                        {...reactivo}
-                                    />
+                                    <div key={reactivo.id}>
+                                        {reactivo.id}
+                                    </div>
                                 ))
                             }
                         </Grid.Column>
