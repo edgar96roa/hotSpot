@@ -5,7 +5,7 @@ import { QuestionEditModal } from './QuestionEditModal';
 import { QuestionActiveModal } from './QuestionActiveModal';
 import { startDeleteQuestion } from '../../../../actions/questions';
 
-export const QuestionEntry = ({ id, instrucciones, pregunta, valor, imagen }) => {
+export const QuestionEntry = ({ id, instrucciones, pregunta, valor, imagen, lados }) => {
 
     const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ export const QuestionEntry = ({ id, instrucciones, pregunta, valor, imagen }) =>
                         <Table.Cell>{valor}</Table.Cell>
                         <Table.Cell>
                             <QuestionEditModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} />
-                            <QuestionActiveModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} imagen={imagen} />
+                            <QuestionActiveModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} imagen={imagen} lados={lados} />
                             <Button color='red' icon='times rectangle' size='mini' onClick={handleDelete} />
                         </Table.Cell>
                     </Table.Row>

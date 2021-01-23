@@ -5,7 +5,7 @@ import { answersSetAnswer, answersUpdateAnswer } from '../../../../actions/answe
 import { activeQuestion, questionClearActiveQuestion } from '../../../../actions/questions';
 import '../../../../styles/generalStyles.css';
 
-export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor }) => {
+export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor, lados }) => {
 
     const dispatch = useDispatch();
 
@@ -27,6 +27,8 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
     });
 
     const { xCoord, yCoord } = coords;
+
+    const [xsd, setXsd] = useState(false);
 
     const [open, setOpen] = useState(false);
 
@@ -69,11 +71,7 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
         const xCoordinate = parseFloat(event.nativeEvent.offsetX);
         const yCoordinate = parseFloat(event.nativeEvent.offsetY);
 
-        setCoords({
-            ...coords,
-            xCoord: xCoordinate,
-            yCoord: yCoordinate
-        });
+        setCoords({ ...coords, xCoord: xCoordinate, yCoord: yCoordinate });
 
         const imageStyles = document.getElementById("imagenId");
         const info = window.getComputedStyle(imageStyles);
@@ -87,19 +85,19 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
         const leftStyle = (x - 2) + "px";
         const topStyle = (y - 15) + "px";
 
-        setStyles({
-            ...styles,
-            left: leftStyle,
-            top: topStyle,
-            opacity: 1.0
-        });
+        setStyles({ ...styles, left: leftStyle, top: topStyle, opacity: 1.0 });
 
-        const respuesta = xCoordinate + "," + yCoordinate;
+        let cvb = null;
 
-        const pregunta = { id, idReactivo, respuesta };
+        (xCoordinate >= lados.sideD && xCoordinate <= lados.sideB && yCoordinate >= lados.sideA && yCoordinate <= lados.sideC)
+        ? cvb = true
+        : cvb = false
+
+        const pregunta = { id, idReactivo, respuesta: cvb };
 
         answers.forEach(answer => {
             if (answer.id === id) {
+                console.log(xsd);
                 dispatch( answersUpdateAnswer(pregunta) );
             }
         });
@@ -119,15 +117,21 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
             xCoord: 0,
             yCoord: 0
         });
+
+        setXsd(false);
     }
 
     const handleSubmitAnswer = () => {
 
-        const respuesta = xCoord + "," + yCoord;
-
         let exists = false;
 
-        const answer = { id, idReactivo, respuesta };
+        let cvb = null;
+
+        (xCoord >= lados.sideD && xCoord <= lados.sideB && yCoord >= lados.sideA && yCoord <= lados.sideC)
+        ? cvb = true
+        : cvb = false
+
+        const answer = { id, idReactivo, respuesta: cvb };
 
         answers.forEach(answer => {
             if (answer.id === id) {
