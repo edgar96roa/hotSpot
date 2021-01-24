@@ -35,7 +35,6 @@ export const QuestionsEntries = () => {
                                         <Table.Row>
                                             <Table.HeaderCell >Id</Table.HeaderCell>
                                             <Table.HeaderCell >Pregunta</Table.HeaderCell>
-                                            <Table.HeaderCell >Valor</Table.HeaderCell>
                                             <Table.HeaderCell width={3}>Acciones</Table.HeaderCell>
                                         </Table.Row>
                                     </Table.Header>
@@ -45,7 +44,6 @@ export const QuestionsEntries = () => {
                                             ?
                                             <Table.Body>
                                                 <Table.Row>
-                                                    <Table.Cell>{loader}</Table.Cell>
                                                     <Table.Cell>{loader}</Table.Cell>
                                                     <Table.Cell>{loader}</Table.Cell>
                                                     <Table.Cell>{loader}</Table.Cell>

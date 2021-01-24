@@ -26,16 +26,14 @@ export const QuestionEntry = ({ id, instrucciones, pregunta, valor, imagen, lado
                         <Table.Cell>{loader}</Table.Cell>
                         <Table.Cell>{loader}</Table.Cell>
                         <Table.Cell>{loader}</Table.Cell>
-                        <Table.Cell>{loader}</Table.Cell>
                     </Table.Row>
                     :
                     <Table.Row>
                         <Table.Cell>{id}</Table.Cell>
                         <Table.Cell>{pregunta}</Table.Cell>
-                        <Table.Cell>{valor}</Table.Cell>
                         <Table.Cell>
-                            <QuestionEditModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} />
-                            <QuestionActiveModal id={id} instrucciones={instrucciones} pregunta={pregunta} valor={valor} imagen={imagen} lados={lados} />
+                            <QuestionEditModal id={id} pregunta={pregunta} imagen={imagen} lados={lados} />
+                            <QuestionActiveModal id={id} pregunta={pregunta} imagen={imagen} lados={lados} />
                             <Button color='red' icon='times rectangle' size='mini' onClick={handleDelete} />
                         </Table.Cell>
                     </Table.Row>

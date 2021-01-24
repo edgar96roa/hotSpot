@@ -27,9 +27,7 @@ export const QuestionAddModal = () => {
     });
 
     const [formValues, setFormValues] = useState({
-        instrucciones: '',
         pregunta: '',
-        valor: 0,
         imagen: 'https://react.semantic-ui.com/images/wireframe/image.png',
         lados: {
             ladoA: area.top,
@@ -39,7 +37,7 @@ export const QuestionAddModal = () => {
         }
     });
 
-    const { instrucciones, pregunta, valor, imagen } = formValues;
+    const { pregunta, imagen } = formValues;
 
     const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -179,19 +177,7 @@ export const QuestionAddModal = () => {
 
     const validateForm = () => {
 
-        if (formValues.instrucciones.length > 0) {
-            setUploadButton(false);
-        } else {
-            setUploadButton(true);
-        }
-
         if (formValues.pregunta.length > 0) {
-            setUploadButton(false);
-        } else {
-            setUploadButton(true);
-        }
-
-        if (formValues.valor > 0 && formValues.valor <= 10) {
             setUploadButton(false);
         } else {
             setUploadButton(true);
@@ -208,19 +194,8 @@ export const QuestionAddModal = () => {
     }
 
     useEffect(() => {
-        if (formValues.instrucciones.length > 0) {
-            setUploadButton(false);
-        } else {
-            setUploadButton(true);
-        }
 
         if (formValues.pregunta.length > 0) {
-            setUploadButton(false);
-        } else {
-            setUploadButton(true);
-        }
-
-        if (formValues.valor > 0 && formValues.valor <= 10) {
             setUploadButton(false);
         } else {
             setUploadButton(true);
@@ -260,9 +235,7 @@ export const QuestionAddModal = () => {
         });
         setFormValues({
             ...formValues,
-            instrucciones: '',
             pregunta: '',
-            valor: 0,
             imagen: 'https://react.semantic-ui.com/images/wireframe/image.png',
             lados: {
                 ladoA: area.top,
@@ -304,19 +277,6 @@ export const QuestionAddModal = () => {
                             <Form>
 
                                 <Form.Field required>
-                                    <label>Instrucciones</label>
-                                    <Form.Input
-                                        required
-                                        type="text"
-                                        name="instrucciones"
-                                        placeholder="Instrucciones"
-                                        autoComplete="off"
-                                        value={instrucciones}
-                                        onChange={handleInputChange}
-                                    />
-                                </Form.Field>
-
-                                <Form.Field required>
                                     <label>Pregunta</label>
                                     <Form.Input
 
@@ -325,21 +285,6 @@ export const QuestionAddModal = () => {
                                         placeholder="Pregunta"
                                         autoComplete="off"
                                         value={pregunta}
-                                        onChange={handleInputChange}
-                                    />
-                                </Form.Field>
-
-                                <Form.Field required>
-                                    <label>Valor</label>
-                                    <Form.Input
-                                        type="number"
-                                        min="0.10"
-                                        max="10"
-                                        step="0.10"
-                                        name="valor"
-                                        placeholder="Valor"
-                                        autoComplete="off"
-                                        value={valor}
                                         onChange={handleInputChange}
                                     />
                                 </Form.Field>
