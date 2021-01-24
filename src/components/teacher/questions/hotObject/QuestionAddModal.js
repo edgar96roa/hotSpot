@@ -73,26 +73,11 @@ export const QuestionAddModal = () => {
         }));
     }
 
-    const handleAnswerTrue = (id) => {
+    const handleAnswerTrue = (id, answer) => {
         const reactivo = reactivos.find(reactivo => reactivo.id === id);
-        reactivo.answer = true;
+        reactivo.answer = answer;
 
-        let nuevoReactivosEnFalse = reactivos.filter(reactivo => reactivo.id !== id);//setting distinct reactivos, it doesn't include reactivo which i clicked
-        let nuevoReactivos = nuevoReactivosEnFalse.map(reactivo => ({ ...reactivo, answer: false }));//setting false to answers on reactivos before to take them
-        setReactivos([...nuevoReactivos, reactivo].sort((a, b) => {
-            if (a.id > b.id) {
-                return 1;
-            } else {
-                return -1;
-            }
-        }));
-    }
-
-    const handleAnswerFalse = (id) => {
-        const reactivo = reactivos.find(reactivo => reactivo.id === id);
-        reactivo.answer = false;
-
-        const nuevoReactivos = reactivos.filter(reactivo => reactivo.id !== id);
+        let nuevoReactivos = reactivos.filter(reactivo => reactivo.id !== id);//setting distinct reactivos, it doesn't include reactivo which i clicked
 
         setReactivos([...nuevoReactivos, reactivo].sort((a, b) => {
             if (a.id > b.id) {
@@ -240,13 +225,13 @@ export const QuestionAddModal = () => {
                                                                         basic={!reactivo.answer}
                                                                         color='green'
                                                                         icon='checkmark'
-                                                                        onClick={() => handleAnswerTrue(reactivo.id)}
+                                                                        onClick={() => handleAnswerTrue(reactivo.id, true)}
                                                                     />
                                                                     <Button
                                                                         basic={reactivo.answer}
                                                                         color='red'
                                                                         icon='x'
-                                                                        onClick={() => handleAnswerFalse(reactivo.id)}
+                                                                        onClick={() => handleAnswerTrue(reactivo.id, false)}
                                                                     />
                                                                 </Button.Group>
                                                             </Grid.Column>

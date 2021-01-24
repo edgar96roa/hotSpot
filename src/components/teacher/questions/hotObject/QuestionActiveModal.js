@@ -161,9 +161,6 @@ export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
                                                 </Grid.Column>
                                                 </Grid.Row>                                                
                                             </Grid>
-                                        {/* <div>{reactivo.url}</div>
-                                        <div>{reactivo.isImage.toString()}</div>
-                                        <div>{reactivo.answer + ''}</div> */}
                                     </div>
                                 ))
                             }

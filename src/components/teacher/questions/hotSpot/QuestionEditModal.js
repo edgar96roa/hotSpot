@@ -5,7 +5,7 @@ import { useForm } from '../../../../hooks/useForm';
 import { activeQuestion, questionClearActiveQuestion, questionStartUpdate } from '../../../../actions/questions';
 
 export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
-    
+
     const dispatch = useDispatch();
 
     const { active: question } = useSelector((state) => state.questions);
@@ -15,11 +15,11 @@ export const QuestionEditModal = ({ id, instrucciones, pregunta, valor }) => {
     const handleActiveQuestion = () => {
         dispatch(activeQuestion(id, {instrucciones, pregunta, valor}));
     }
-    
+
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        
+
         dispatch( activeQuestion( id, {...formValues} ) );
 
     }, [formValues, dispatch, id])
