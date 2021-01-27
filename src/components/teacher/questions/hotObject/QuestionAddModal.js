@@ -91,6 +91,7 @@ export const QuestionAddModal = () => {
     const createQuestion = () => {
         let pregunta = formValues.question;
         let questionValues = {
+            tipo: 1,
             pregunta,
             reactivos
         };

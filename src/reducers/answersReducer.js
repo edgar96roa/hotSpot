@@ -15,7 +15,7 @@
 import { types } from '../types/types';
 
 const initialState = {
-    answers: []
+    reactiveList: []
 }
 
 export const answersReducer = (state = initialState, action) => {
@@ -25,16 +25,14 @@ export const answersReducer = (state = initialState, action) => {
         case types.answersSetAnswer:
             return {
                 ...state,
-                answers: [...state.answers, action.payload]
+                reactiveList: [...state.reactiveList, action.payload]
             }
 
         case types.answersUpdateAnswer:
-            const tempAux = state.answers;
+            const tempAux = state.reactiveList;
 
             let resolve = tempAux.map(
                 answer => {
-                    console.log(answer);
-                    console.log(action.payload);
                     if (answer.id === action.payload.id) {
                         return action.payload;
                     } else {
@@ -45,13 +43,7 @@ export const answersReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                answers: resolve
-            }
-
-        case types.answersAddAnswer:
-            return {
-                ...state,
-                answers: [action.payload, ...state.answers]
+                reactiveList: resolve
             }
 
         default:

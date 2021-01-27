@@ -49,6 +49,9 @@ export const SideMenu = (props) => {
 
                 <Menu.Item
                     name='tests'
+                    active={ activeItem === 'tests' }
+                    onClick={ handleItemClick }
+                    as={Link} to='/teacher/tests'
                 >
                     <Icon name='pencil' size='large' />
                     Exámenes

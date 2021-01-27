@@ -6,11 +6,11 @@ import { answersSetAnswer, answersUpdateAnswer } from '../../../../actions/answe
 import { activeQuestion, questionClearActiveQuestion } from '../../../../actions/questions';
 import '../../../../styles/generalStyles.css';
 
-export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
+export const HotObjectQuestionActiveModal = ({ id, pregunta, reactivos }) => {
 
     const dispatch = useDispatch();
 
-    const reactiveList = useSelector(state => state.answers.reactiveList);
+    const answers = useSelector(state => state.answers.answers);
 
     const [answer, setAnswer] = useState({
         id: '',
@@ -62,17 +62,15 @@ export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
     }
 
     const handleClickAnswer = (id, reactivo) => {
-
         setSelectedId(id);
 
         setAnswer({...answer, id: idQuestion.current, idReactivo: reactivo.id, respuesta: reactivo.answer});
 
-        let pregunta = { idQuestion: idQuestion.current, idReactive: reactivo.id, solution: reactivo.answer, reactiveType: 1 };
+        let pregunta = { id: idQuestion.current, idReactivo: reactivo.id, respuesta: reactivo.answer };
 
-        reactiveList.forEach(answer => {
-            if (answer.idQuestion === idQuestion.current) {
+        answers.forEach(answer => {
+            if (answer.id === idQuestion.current) {
                 dispatch( answersUpdateAnswer(pregunta) );
-                ///////////////////////////////////(pregunta.solution === true) ? console.log("correcta") : console.log("incorrecta")
             }
         });
     }
@@ -81,19 +79,14 @@ export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
 
         let exists = false;
 
-        const {id, idReactivo, respuesta} = answer;
-
-        const pregunta = { idQuestion: id, idReactive: idReactivo, solution: respuesta, reactiveType: 1 };
-
-        reactiveList.forEach(answer => {
-            if (answer.idQuestion === id) {
+        answers.forEach(answer => {
+            if (answer.id === id) {
                 exists = true;
             } 
         });
 
         if(!exists){
-            dispatch(answersSetAnswer(pregunta));
-            ///////////////////////////////////(pregunta.solution === true) ? console.log("correcta") : console.log("incorrecta")
+            dispatch(answersSetAnswer(answer));
         }
     }
 
@@ -166,8 +159,8 @@ export const QuestionActiveModal = ({ id, pregunta, reactivos }) => {
                                                             </Grid.Row>
                                                     }
                                                 </Grid.Column>
-                                                </Grid.Row>                                                
-                                            </Grid>
+                                            </Grid.Row>                                                
+                                        </Grid>
                                     </div>
                                 ))
                             }

@@ -5,11 +5,11 @@ import { answersSetAnswer, answersUpdateAnswer } from '../../../../actions/answe
 import { activeQuestion, questionClearActiveQuestion } from '../../../../actions/questions';
 import '../../../../styles/generalStyles.css';
 
-export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor, lados }) => {
+export const QuestionActiveModal = ({ id, imagen, pregunta, lados }) => {
 
     const dispatch = useDispatch();
 
-    const answers = useSelector(state => state.answers.answers);
+    const reactiveList = useSelector(state => state.answers.reactiveList);
 
     const [styles, setStyles] = useState({
         left: '0px',
@@ -28,13 +28,11 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
 
     const { xCoord, yCoord } = coords;
 
-    const [xsd, setXsd] = useState(false);
-
     const [open, setOpen] = useState(false);
 
     const onSelectViewQuestion = () => {
         dispatch(
-            activeQuestion(id, { imagen, instrucciones, pregunta, valor })//de aquí vamos al archivo questions de la carpeta actions
+            activeQuestion(id, { imagen, pregunta })//de aquí vamos al archivo questions de la carpeta actions
         );
     }
 
@@ -87,18 +85,18 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
 
         setStyles({ ...styles, left: leftStyle, top: topStyle, opacity: 1.0 });
 
-        let cvb = null;
+        let resp = null;
 
         (xCoordinate >= lados.sideD && xCoordinate <= lados.sideB && yCoordinate >= lados.sideA && yCoordinate <= lados.sideC)
-        ? cvb = true
-        : cvb = false
+        ? resp = true
+        : resp = false
 
-        const pregunta = { id, idReactivo, respuesta: cvb };
+        const pregunta = { idQuestion: id, idReactive: idReactivo, solution: resp, reactiveType: 0 };
 
-        answers.forEach(answer => {
-            if (answer.id === id) {
-                console.log(xsd);
+        reactiveList.forEach(answer => {
+            if (answer.idQuestion === id) {
                 dispatch( answersUpdateAnswer(pregunta) );
+                //////////////////////////////(pregunta.solution === true) ? console.log("correcta") : console.log("incorrecta")
             }
         });
 
@@ -117,30 +115,29 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
             xCoord: 0,
             yCoord: 0
         });
-
-        setXsd(false);
     }
 
     const handleSubmitAnswer = () => {
 
         let exists = false;
 
-        let cvb = null;
+        let respuesta = null;
 
         (xCoord >= lados.sideD && xCoord <= lados.sideB && yCoord >= lados.sideA && yCoord <= lados.sideC)
-        ? cvb = true
-        : cvb = false
+        ? respuesta = true
+        : respuesta = false
 
-        const answer = { id, idReactivo, respuesta: cvb };
+        const answer = { idQuestion: id, idReactive: idReactivo, solution: respuesta, reactiveType: 0 };
 
-        answers.forEach(answer => {
-            if (answer.id === id) {
+        reactiveList.forEach(answer => {
+            if (answer.idQuestion === id) {
                 exists = true;
-            } 
+            }
         });
 
         if(!exists){
             dispatch(answersSetAnswer(answer));
+            //////////////////////////////(pregunta.solution === true) ? console.log("correcta") : console.log("incorrecta")
         }
     }
 
@@ -161,17 +158,9 @@ export const QuestionActiveModal = ({ id, imagen, instrucciones, pregunta, valor
                     <Grid.Row>
                         <Grid.Column width={16}>
                             <Modal.Description>
-                                <Header>Instrucciones </Header>
-                                <p>
-                                    {instrucciones}
-                                </p>
                                 <Header>Pregunta</Header>
                                 <p>
                                     {pregunta}
-                                </p>
-                                <Header>Valor</Header>
-                                <p>
-                                    {valor}
                                 </p>
                                 <Header>Imagen</Header>
 

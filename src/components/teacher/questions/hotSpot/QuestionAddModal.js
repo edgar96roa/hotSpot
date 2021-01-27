@@ -27,6 +27,7 @@ export const QuestionAddModal = () => {
     });
 
     const [formValues, setFormValues] = useState({
+        tipo: 0,
         pregunta: '',
         imagen: 'https://react.semantic-ui.com/images/wireframe/image.png',
         lados: {
