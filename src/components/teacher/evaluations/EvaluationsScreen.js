@@ -1,13 +1,15 @@
 
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Grid, Header, Button, Icon, Image } from 'semantic-ui-react';
 import ReactPlayer from 'react-player';
 import { answersSetAnswer, answersUpdateAnswer } from '../../../actions/answers';
 
 export const EvaluationsScreen = () => {
 
-    const dispatch = useDispatch();
+    let group_code = 123;
+
+    let id_assignment= 22;
 
     let hotSpotQuestions = useSelector(state => state.questions.questions);
 
@@ -17,11 +19,15 @@ export const EvaluationsScreen = () => {
 
     const [position, setPosition] = useState(0)
 
+    const [respuestas, setRespuestas] = useState([])
+
     let question = test[position];
 
-    let backButton = (position === 0) ? true : false;
+    let backButton = (position >= 0) ? true : false;
 
     let nextButton = (position >= test.length - 1) ? true : false;
+
+    let submitButton = (position !== test.length - 1) ? true : false;
 
     const reactiveList = useSelector(state => state.answers.reactiveList);
 
@@ -30,6 +36,8 @@ export const EvaluationsScreen = () => {
         idReactivo: '',
         respuesta: null
     });
+
+    const correctAnswers = null;
 
     /*BEGIN Hot Object*/
     let idQuestion = (question.tipo === 1) ? question.id : null;
@@ -55,15 +63,12 @@ export const EvaluationsScreen = () => {
     const handleClickAnswer = (id, reactivo) => {
         setSelectedId(id);
 
-        setAnswer({ ...answer, id: idQuestion, idReactivo: reactivosHo.id, respuesta: reactivo.answer });
+        setAnswer({ ...answer, id: idQuestion, idReactivo: selectedId, respuesta: reactivo.answer });
 
-        let pregunta = { id: idQuestion, idReactivo: reactivosHo.id, respuesta: reactivo.answer };
+        let respuesta = reactivo.answer;
 
-        answers.forEach(answer => {
-            if (answer.id === idQuestion) {
-                dispatch(answersUpdateAnswer(pregunta));
-            }
-        });
+        respuestas[idQuestion] = respuesta; //agrega true o false dependiendo de la respuesta en la posición del arreglo
+
     }
     /*END Hot Object*/
 
@@ -84,21 +89,19 @@ export const EvaluationsScreen = () => {
     const { xCoord, yCoord } = coords;
 
     const hideIcon = () => {
-        const hideIcon = () => {
-            setStyles({
-                ...styles,
-                left: '0px',
-                top: '0px',
-                opacity: 0
-            });
 
-            setCoords({
-                ...coords,
-                xCoord: 0,
-                yCoord: 0
-            });
+        setStyles({
+            ...styles,
+            left: '0px',
+            top: '0px',
+            opacity: 0
+        });
 
-        }
+        setCoords({
+            ...coords,
+            xCoord: 0,
+            yCoord: 0
+        });
     }
 
     const handleCoordinates = (event) => {
@@ -121,28 +124,29 @@ export const EvaluationsScreen = () => {
 
         setStyles({ ...styles, left: leftStyle, top: topStyle, opacity: 1.0 });
 
-        let cvb = null;
+        let resp = null;
 
-        (xCoordinate >= question.lados.sideD && xCoordinate <= question.lados.sideB 
+        (xCoordinate >= question.lados.sideD && xCoordinate <= question.lados.sideB
             && yCoordinate >= question.lados.sideA && yCoordinate <= question.lados.sideC)
-        ? cvb = true
-        : cvb = false
+            ? resp = true
+            : resp = false
 
-        let id = question.id;
+        let respuesta = resp;
 
-        const pregunta = { id, idReactivo: 0, respuesta: cvb };
+        respuestas[question.id] = respuesta; //agrega true o false dependiendo de la respuesta en la posición del arreglo
 
-        answers.forEach(answer => {
-            if (answer.id === id) {
-                dispatch( answersUpdateAnswer(pregunta) );
-            }
-        });
     }
     /*END Hot Spot*/
 
     const nextQuestion = () => {
         setTimeout(() => {
             setPosition(position + 1);
+            setStyles({
+                ...styles,
+                left: '0px',
+                top: '0px',
+                opacity: 0
+            });
         }, 500);
     }
 
@@ -153,9 +157,27 @@ export const EvaluationsScreen = () => {
     }
 
     const handleSubmitAnswers = () => {
-    }
 
-    console.log('reactivosHo', reactivosHo);
+        setStyles({
+            ...styles,
+            left: '0px',
+            top: '0px',
+            opacity: 0
+        });
+
+        let numberOfQuestions = test.length;
+
+        let correctAnswers = 5;//se necesita sacar este numero de respuestas[]
+
+        let score = (correctAnswers / numberOfQuestions) * 100;
+
+        let exam = { group_code, score, id_assignment };
+
+        console.log(exam);
+
+        console.log(score)        
+
+    }
 
     return (
         <div>
@@ -172,11 +194,11 @@ export const EvaluationsScreen = () => {
                 <Grid.Row>
                     <Grid.Column width={16}>
 
-                        <Header>{"Pregunta N° "+(position+1)}</Header>
+                        <Header>{"Pregunta N° " + (position + 1)}</Header>
                         <Header as='h4' textAlign='left'>{question.pregunta}</Header>
 
                         {
-                            (question.tipo === 0) //hot object
+                            (question.tipo === 0) //hot spot
                                 ?
                                 <Grid centered>
                                     <Grid.Row>
@@ -274,6 +296,7 @@ export const EvaluationsScreen = () => {
 
                         <Button.Group floated='right'>
                             <Button
+                                disabled={submitButton}
                                 color='green'
                                 content="Enviar Respuestas"
                                 labelPosition='right'
